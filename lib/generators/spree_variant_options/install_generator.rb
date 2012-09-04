@@ -13,8 +13,14 @@ module SpreeVariantOptions
       end
 
       def add_stylesheets
-        inject_into_file "app/assets/stylesheets/store/all.css", "*= require spree_variant_options\n", :before => /\*\//, :verbose => true
+        css_stylesheet = Rails.root.join('app', 'assets', 'stylesheets', 'store', 'all.css')
+        sass_stylesheet = Rails.root.join('app', 'assets', 'stylesheets', 'store', 'all.css.scss')
+        
+        # If the files isn't an SASS file, we'll convert it into a SASS file
+        stylesheet = File.exists?(sass_stylesheet) ? sass_stylesheet : css_stylesheet
+        inject_into_file stylesheet, "*= require spree_variant_options\n", :before => /\*\//, :verbose => true
       end
+
 
     end
   end
